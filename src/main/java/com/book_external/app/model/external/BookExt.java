@@ -7,7 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Book {
+public class BookExt {
     private Integer id;
     private Integer userId;
     private String title;
