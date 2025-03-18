@@ -9,8 +9,8 @@ class AppBookExternalApplicationTests {
 
     @Test
     void contextLoads() {
-        AppBookExternalApplication app = new AppBookExternalApplication();
-        Assertions.assertThat(app).isNotNull();
+        AppBookExternalApplication myClass = new AppBookExternalApplication();
+        Assertions.assertThat(myClass).isNotNull();
     }
 
 }
