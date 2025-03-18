@@ -1,6 +1,5 @@
 package com.book_external.app.model.internal;
 
-import com.book_external.app.model.external.Book;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -9,15 +8,17 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-@Table(name = "book_category")
+@Entity
+@Table(name = "tbl_book_category")
 public class BookCategory {
     @Id
+    @Column(name = "boca_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "id_book")
-    private Book book;
+    @JoinColumn(name = "boca_id_book")
+    private BookInter bookInter;
     @ManyToOne
-    @JoinColumn(name = "id_category")
+    @JoinColumn(name = "boca_id_category")
     private Category category;
 }
