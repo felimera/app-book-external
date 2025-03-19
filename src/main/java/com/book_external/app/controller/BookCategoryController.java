@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/v1/bookcategory")
 @Slf4j
-public class IBookCategoryController {
+public class BookCategoryController {
 
     private IBookCategoryService iBookCategoryService;
 
     @Autowired
-    public IBookCategoryController(IBookCategoryService iBookCategoryService) {
+    public BookCategoryController(IBookCategoryService iBookCategoryService) {
         this.iBookCategoryService = iBookCategoryService;
     }
 
