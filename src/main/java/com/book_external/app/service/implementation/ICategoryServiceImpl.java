@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class CategoryServiceImpl implements ICategoryService {
+public class ICategoryServiceImpl implements ICategoryService {
     private ICategoryRepository iCategoryRepository;
 
     private ICategoryCriteriaRepository iCategoryCriteriaRepository;
     private ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository;
 
-    public CategoryServiceImpl(ICategoryRepository iCategoryRepository, ICategoryCriteriaRepository iCategoryCriteriaRepository, ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository) {
+    public ICategoryServiceImpl(ICategoryRepository iCategoryRepository, ICategoryCriteriaRepository iCategoryCriteriaRepository, ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository) {
         this.iCategoryRepository = iCategoryRepository;
         this.iCategoryCriteriaRepository = iCategoryCriteriaRepository;
         this.iSubCategoryCriteriaRepository = iSubCategoryCriteriaRepository;
