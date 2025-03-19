@@ -5,13 +5,13 @@ import com.book_external.app.model.dto.SubCategoryDto;
 import com.book_external.app.model.internal.Category;
 import com.book_external.app.model.internal.SubCategory;
 import com.book_external.app.repository.ICategoryCriteriaRepository;
+import com.book_external.app.repository.ICategoryRepository;
 import com.book_external.app.repository.ISubCategoryCriteriaRepository;
 import com.book_external.app.service.ICategoryService;
 import com.book_external.app.service.mapper.CategoryMapper;
 import com.book_external.app.service.mapper.SubCategoryMapper;
 import com.book_external.app.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,12 +20,13 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class CategoryServiceImpl implements ICategoryService {
+    private ICategoryRepository iCategoryRepository;
 
     private ICategoryCriteriaRepository iCategoryCriteriaRepository;
     private ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository;
 
-    @Autowired
-    public CategoryServiceImpl(ICategoryCriteriaRepository iCategoryCriteriaRepository, ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository) {
+    public CategoryServiceImpl(ICategoryRepository iCategoryRepository, ICategoryCriteriaRepository iCategoryCriteriaRepository, ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository) {
+        this.iCategoryRepository = iCategoryRepository;
         this.iCategoryCriteriaRepository = iCategoryCriteriaRepository;
         this.iSubCategoryCriteriaRepository = iSubCategoryCriteriaRepository;
     }
@@ -85,5 +86,28 @@ public class CategoryServiceImpl implements ICategoryService {
                 .stream()
                 .map(CategoryMapper.INSTANCE::toDto)
                 .toList();
+    }
+
+    @Override
+    public CategoryDto create(CategoryDto categoryDto) {
+        if (isExistsCategory(categoryDto)) {
+            Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
+            Category entity = iCategoryRepository.save(category);
+            return CategoryMapper.INSTANCE.toDto(entity);
+        }
+        return categoryDto;
+    }
+
+    @Override
+    public CategoryDto edit(Integer id, CategoryDto categoryDto) {
+        Category categoryOld = iCategoryRepository.findById(id).orElseThrow();
+        categoryOld.setNameCategory(categoryDto.getNombre());
+        categoryOld.setDescriptionCategory(categoryDto.getDescripcion());
+        Category entity = iCategoryRepository.save(categoryOld);
+        return CategoryMapper.INSTANCE.toDto(entity);
+    }
+
+    private boolean isExistsCategory(CategoryDto categoryDto) {
+        return iCategoryRepository.getNumberMatchesByName(categoryDto.getNombre()) == 0 && iCategoryRepository.getNumberMatchesByDescription(categoryDto.getDescripcion()) == 0;
     }
 }

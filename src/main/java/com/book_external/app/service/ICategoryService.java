@@ -8,4 +8,8 @@ public interface ICategoryService {
     List<CategoryDto> getCategoryListByMultipleParameter(CategoryDto dto);
 
     List<CategoryDto> getCategoryByNameOrDescription(CategoryDto categoryDto);
+
+    CategoryDto create(CategoryDto categoryDto);
+
+    CategoryDto edit(Integer id, CategoryDto categoryDto);
 }
