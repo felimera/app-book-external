@@ -4,6 +4,7 @@ import com.book_external.app.model.dto.CategoryDto;
 import com.book_external.app.model.dto.SubCategoryDto;
 import com.book_external.app.model.internal.Category;
 import com.book_external.app.model.internal.SubCategory;
+import com.book_external.app.repository.ICategoryCriteriaRepository;
 import com.book_external.app.repository.ISubCategoryCriteriaRepository;
 import com.book_external.app.service.ICategoryService;
 import com.book_external.app.service.mapper.CategoryMapper;
@@ -19,10 +20,13 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class CategoryServiceImpl implements ICategoryService {
+
+    private ICategoryCriteriaRepository iCategoryCriteriaRepository;
     private ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository;
 
     @Autowired
-    public CategoryServiceImpl(ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository) {
+    public CategoryServiceImpl(ICategoryCriteriaRepository iCategoryCriteriaRepository, ISubCategoryCriteriaRepository iSubCategoryCriteriaRepository) {
+        this.iCategoryCriteriaRepository = iCategoryCriteriaRepository;
         this.iSubCategoryCriteriaRepository = iSubCategoryCriteriaRepository;
     }
 
@@ -67,5 +71,19 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         log.info("Result DtoGroup =>> " + categoryDtos);
         return categoryDtos;
+    }
+
+    @Override
+    public List<CategoryDto> getCategoryByNameOrDescription(CategoryDto categoryDto) {
+        Map<String, String> map = new HashMap<>();
+        map.put(Constant.CATEGORY_NAME, categoryDto.getNombre());
+        map.put(Constant.CATEGORY_DESCRIPTION, categoryDto.getDescripcion());
+        log.info("map =>>" + map);
+
+        return iCategoryCriteriaRepository
+                .getCategoryByNameOrDescription(map)
+                .stream()
+                .map(CategoryMapper.INSTANCE::toDto)
+                .toList();
     }
 }

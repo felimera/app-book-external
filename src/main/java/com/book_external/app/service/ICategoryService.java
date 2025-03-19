@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ICategoryService {
     List<CategoryDto> getCategoryListByMultipleParameter(CategoryDto dto);
+
+    List<CategoryDto> getCategoryByNameOrDescription(CategoryDto categoryDto);
 }
