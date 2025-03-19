@@ -26,10 +26,17 @@ public class CategoryController {
         this.iCategoryService = iCategoryService;
     }
 
-    @Operation(summary = "Get a list of categories by multiple parameters.")
-    @PostMapping()
+    @Operation(summary = "Get a list of all registered categories with subcategories.")
+    @PostMapping(path = "/subcategories")
     public ResponseEntity<List<CategoryDto>> getCategoryListByMultipleParameter(@RequestBody CategoryDto dto) {
         log.info("Dto =>>" + dto.toString());
         return ResponseEntity.ok(iCategoryService.getCategoryListByMultipleParameter(dto));
+    }
+
+    @Operation(summary = "Get a list of all categories by name and/or description.")
+    @PostMapping(path = "/namedescription")
+    public ResponseEntity<List<CategoryDto>> getCategoryByNameOrDescription(@RequestBody CategoryDto dto) {
+        log.info("Dto =>>" + dto.toString());
+        return ResponseEntity.ok(iCategoryService.getCategoryByNameOrDescription(dto));
     }
 }
