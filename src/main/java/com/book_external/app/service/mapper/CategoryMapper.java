@@ -2,6 +2,7 @@ package com.book_external.app.service.mapper;
 
 import com.book_external.app.model.dto.CategoryDto;
 import com.book_external.app.model.internal.Category;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -13,4 +14,7 @@ public interface CategoryMapper {
     @Mapping(target = "nombre", source = "nameCategory")
     @Mapping(target = "descripcion", source = "descriptionCategory")
     CategoryDto toDto(Category entity);
+
+    @InheritInverseConfiguration
+    Category toEntity(CategoryDto dto);
 }
