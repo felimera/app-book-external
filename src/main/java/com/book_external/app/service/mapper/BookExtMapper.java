@@ -12,6 +12,7 @@ public interface BookExtMapper {
     BookExtMapper INSTANCE = Mappers.getMapper(BookExtMapper.class);
 
     @Mapping(target = "titulo", source = "title")
+    @Mapping(target = "idCliente", source = "userId")
     @Mapping(target = "isCompletado", source = "completed")
     BookExtDto toDto(BookExt entity);
 }
