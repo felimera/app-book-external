@@ -107,6 +107,11 @@ public class CategoryServiceImpl implements ICategoryService {
         return CategoryMapper.INSTANCE.toDto(entity);
     }
 
+    @Override
+    public Category getCategoryById(Integer idCategoria) {
+        return iCategoryRepository.findById(idCategoria).orElseThrow();
+    }
+
     private boolean isExistsCategory(CategoryDto categoryDto) {
         return iCategoryRepository.getNumberMatchesByName(categoryDto.getNombre()) == 0 && iCategoryRepository.getNumberMatchesByDescription(categoryDto.getDescripcion()) == 0;
     }
