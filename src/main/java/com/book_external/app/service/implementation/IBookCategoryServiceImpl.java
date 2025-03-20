@@ -12,6 +12,8 @@ import com.book_external.app.service.mapper.BookCategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class IBookCategoryServiceImpl implements IBookCategoryService {
 
@@ -27,7 +29,15 @@ public class IBookCategoryServiceImpl implements IBookCategoryService {
     }
 
     @Override
+    public List<BookCategoryDto> getListAll() {
+        return iBookCategoryRepository.findAll().stream().map(BookCategoryMapper.INSTANCE::toDto).toList();
+    }
+
+    @Override
     public BookCategoryDto create(BookCategoryDto dto) {
+        if (iBookCategoryRepository.getMatchOnBookAndCategoryIds(dto.getIdBookInter(), dto.getIdCategory()) != 0)
+            return dto;
+
         BookCategory bookCategory = new BookCategory();
         Category category = iCategoryService.getCategoryById(dto.getIdCategory());
         BookInter bookInter = iBookInterService.getBookInterById(dto.getIdBookInter());
