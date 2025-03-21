@@ -1,6 +1,9 @@
 package com.book_external.app.controller;
 
-import com.book_external.app.model.dto.CustomerDto;
+import com.book_external.app.model.component.TypesStatus;
+import com.book_external.app.model.response.Meta;
+import com.book_external.app.model.response.Pagination;
+import com.book_external.app.model.response.Response;
 import com.book_external.app.service.ICustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Tag(name = "Customer", description = "Operations related to customers.")
 @RestController
@@ -28,7 +29,12 @@ public class CustomerController {
 
     @Operation(summary = "Get all clients of the external service.")
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getListAll() {
-        return ResponseEntity.ok(customerService.getListAll());
+    public ResponseEntity<Response> getListAll() {
+        Response response = new Response();
+        response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
+        response.setPagination(Pagination.builder().build().toPaginationBuilder());
+        response.setData(customerService.getListAll());
+
+        return ResponseEntity.ok(response);
     }
 }

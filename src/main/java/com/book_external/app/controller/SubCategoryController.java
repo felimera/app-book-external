@@ -1,15 +1,22 @@
 package com.book_external.app.controller;
 
+import com.book_external.app.model.component.TypesStatus;
 import com.book_external.app.model.dto.SubCategoryDto;
+import com.book_external.app.model.exception.BadRequestException;
+import com.book_external.app.model.response.Meta;
+import com.book_external.app.model.response.Pagination;
+import com.book_external.app.model.response.Response;
 import com.book_external.app.service.ISubCategoryService;
+import com.book_external.app.utils.BuildErrorUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "SubCategory", description = "Operations related to subcategories.")
 @RestController
@@ -26,21 +33,42 @@ public class SubCategoryController {
 
     @Operation(summary = "Create a Subcategory record.")
     @PostMapping
-    public ResponseEntity<SubCategoryDto> create(@RequestBody SubCategoryDto dto) {
+    public ResponseEntity<Response> create(@Valid @RequestBody SubCategoryDto dto, BindingResult bindingResult) {
         log.info("Dto post =>>" + dto.toString());
-        return ResponseEntity.ok(iSubCategoryService.create(dto, dto.getIdCategory()));
+        if (bindingResult.hasErrors())
+            throw new BadRequestException(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Error creating store.", BuildErrorUtil.formatMessage(bindingResult), HttpStatus.BAD_REQUEST);
+
+        Response response = new Response();
+        response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
+        response.setPagination(Pagination.builder().build().toPaginationBuilder());
+        response.setData(iSubCategoryService.create(dto, dto.getIdCategory()));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "Modify a Subcategory record.")
     @PutMapping(path = "{id}")
-    public ResponseEntity<SubCategoryDto> edit(@PathVariable(name = "id") Integer id, @RequestBody SubCategoryDto dto) {
+    public ResponseEntity<Response> edit(@PathVariable(name = "id") Integer id, @Valid @RequestBody SubCategoryDto dto, BindingResult bindingResult) {
         log.info("Dto post =>>" + dto.toString());
-        return ResponseEntity.ok(iSubCategoryService.edit(id, dto));
+        if (bindingResult.hasErrors())
+            throw new BadRequestException(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Error creating store.", BuildErrorUtil.formatMessage(bindingResult), HttpStatus.BAD_REQUEST);
+
+        Response response = new Response();
+        response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
+        response.setPagination(Pagination.builder().build().toPaginationBuilder());
+        response.setData(iSubCategoryService.edit(id, dto));
+
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Get a list of all subcategory records.")
     @GetMapping
-    public ResponseEntity<List<SubCategoryDto>> getListAll() {
-        return ResponseEntity.ok(iSubCategoryService.getListAll());
+    public ResponseEntity<Response> getListAll() {
+        Response response = new Response();
+        response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
+        response.setPagination(Pagination.builder().build().toPaginationBuilder());
+        response.setData(iSubCategoryService.getListAll());
+
+        return ResponseEntity.ok(response);
     }
 }
