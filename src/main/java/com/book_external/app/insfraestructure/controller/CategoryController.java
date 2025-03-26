@@ -1,13 +1,14 @@
+
 package com.book_external.app.insfraestructure.controller;
 
-import com.book_external.app.domain.model.component.TypesStatus;
 import com.book_external.app.application.dto.CategoryDto;
 import com.book_external.app.application.dto.validation.ICreationGroup;
-import com.book_external.app.insfraestructure.exception.BadRequestException;
 import com.book_external.app.application.response.Meta;
 import com.book_external.app.application.response.Pagination;
 import com.book_external.app.application.response.Response;
+import com.book_external.app.domain.model.component.TypesStatus;
 import com.book_external.app.domain.service.ICategoryService;
+import com.book_external.app.insfraestructure.exception.BadRequestException;
 import com.book_external.app.insfraestructure.utils.BuildErrorUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -83,6 +84,17 @@ public class CategoryController {
         response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
         response.setPagination(Pagination.builder().build().toPaginationBuilder());
         response.setData(iCategoryService.edit(id, dto));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @Operation(summary = "Get all category records.")
+    @GetMapping
+    public ResponseEntity<Response> getAllList() {
+        Response response = new Response();
+        response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
+        response.setPagination(Pagination.builder().build().toPaginationBuilder());
+        response.setData(iCategoryService.getAllList());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

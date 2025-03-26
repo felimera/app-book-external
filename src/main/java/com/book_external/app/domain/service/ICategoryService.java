@@ -15,4 +15,6 @@ public interface ICategoryService {
     CategoryDto edit(Integer id, CategoryDto categoryDto);
 
     Category getCategoryById(Integer idCategoria);
+
+    List<CategoryDto> getAllList();
 }
