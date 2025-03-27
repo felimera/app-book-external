@@ -9,10 +9,12 @@ import com.book_external.app.application.response.Response;
 import com.book_external.app.domain.service.IBookCategoryService;
 import com.book_external.app.insfraestructure.utils.BuildErrorUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,6 +42,21 @@ public class BookCategoryController {
         response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
         response.setPagination(Pagination.builder().build().toPaginationBuilder());
         response.setData(iBookCategoryService.getListAll());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get the books, categories and subcategories in nodes.")
+    @GetMapping(path = "/nodelist")
+    public ResponseEntity<Response> getListNode(
+            @RequestParam(name = "nameBook", required = false) String nameBook,
+            @RequestParam(name = "nameCategory", required = false) String nameCategory
+    ) {
+
+        Response response = new Response();
+        response.setMeta(Meta.builder().build().toMetaBuilder(TypesStatus.SUCCESS.name()));
+        response.setPagination(Pagination.builder().build().toPaginationBuilder());
+        response.setData(iBookCategoryService.getListNode(nameBook, nameCategory));
 
         return ResponseEntity.ok(response);
     }

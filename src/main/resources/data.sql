@@ -6,11 +6,12 @@ drop table if exists tbl_book;
 
 -- Building the tables.
 create table tbl_book (
-    boo_id int auto_increment primary key
+    boo_id int auto_increment primary key,
+    boo_name varchar(100) not null
 );
 
 create table tbl_sub_category (
-    sub_id int auto_increment primary key,
+    sub_id int primary key,
     sub_name varchar(100) not null,
     sub_description varchar(1000) null,
     sub_id_category int not null

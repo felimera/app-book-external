@@ -9,6 +9,7 @@ import lombok.Data;
 public class BookInter {
     @Id
     @Column(name = "boo_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    @Column(name = "boo_name")
+    private String name;
 }

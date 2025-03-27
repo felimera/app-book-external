@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ISubCategoryRepository extends JpaRepository<SubCategory, Integer> {
 
@@ -14,4 +16,7 @@ public interface ISubCategoryRepository extends JpaRepository<SubCategory, Integ
 
     @Query("select count(ca.id) from SubCategory ca where upper(ca.descriptionSubCategory) = upper(:description) ")
     Integer getNumberMatchesByDescription(@Param("description") String description);
+
+    @Query("select sc from SubCategory sc where sc.category.id = :idCategory ")
+    List<SubCategory> getAllByCategoryId(@Param("idCategory") Integer idCategory);
 }
